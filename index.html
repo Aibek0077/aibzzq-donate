@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIBZZQ Donate</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #101510;
+  color: white;
+  text-align: center;
+}
+header {
+  padding: 22px;
+  background: #19231b;
+  color: #78f078;
+  font-size: 27px;
+  font-weight: bold;
+}
+.hero { padding: 45px 15px; }
+.hero h1 { font-size: 38px; }
+.hero span { color: #78f078; }
+.cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+.card {
+  background: #1a241c;
+  border: 1px solid #65dc69;
+  border-radius: 14px;
+  padding: 25px;
+  width: 230px;
+}
+.price {
+  color: #78f078;
+  font-size: 28px;
+  font-weight: bold;
+}
+button {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 8px;
+  background: #65dc69;
+  cursor: pointer;
+  font-weight: bold;
+}
+footer {
+  padding: 25px;
+  color: #aabaaa;
+}
+</style>
+</head>
+<body>
+
+<header>⛏ AIBZZQ DONATE</header>
+
+<div class="hero">
+  <h1>Донат <span>дүкені</span> 💎</h1>
+  <p>Өзіңе ұнаған деңгейді таңда!</p>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <h2>🥉 VIP</h2>
+    <p class="price">500 ₸</p>
+    <p>VIP мәртебесі</p>
+    <p>Арнайы белгі</p>
+    <button onclick="buy('VIP',500)">Таңдау</button>
+  </div>
+
+  <div class="card">
+    <h2>🥈 PREMIUM</h2>
+    <p class="price">1000 ₸</p>
+    <p>Premium мәртебесі</p>
+    <p>Қосымша мүмкіндіктер</p>
+    <button onclick="buy('PREMIUM',1000)">Таңдау</button>
+  </div>
+
+  <div class="card">
+    <h2>🥇 LEGEND</h2>
+    <p class="price">2500 ₸</p>
+    <p>Legend мәртебесі</p>
+    <p>Ерекше артықшылықтар</p>
+    <button onclick="buy('LEGEND',2500)">Таңдау</button>
+  </div>
+</div>
+
+<footer>
+  <h3>Қолдауларыңызға рахмет! 💚</h3>
+  <p>© 2026 AIBZZQ Donate</p>
+</footer>
+
+<script>
+function buy(name, price) {
+  alert(name + " — " + price + " ₸\n" +
+  "Нақты төлем жүйесі әзірге қосылмаған.");
+}
+</script>
+
+</body>
+</html>
