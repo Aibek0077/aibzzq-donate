@@ -3,106 +3,259 @@
 <html lang="kk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AIBZZQ Donate</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIBZZQ | Minecraft Donate</title>
 <style>
+:root {
+  --bg: #101510;
+  --panel: #1b251b;
+  --green: #8be28b;
+  --text: #f2f7f2;
+  --muted: #b6c3b6;
+}
 * { box-sizing: border-box; }
 body {
   margin: 0;
+  background: var(--bg);
+  color: var(--text);
   font-family: Arial, sans-serif;
-  background: #101510;
-  color: white;
-  text-align: center;
 }
 header {
-  padding: 22px;
-  background: #19231b;
-  color: #78f078;
-  font-size: 27px;
-  font-weight: bold;
-}
-.hero { padding: 45px 15px; }
-.hero h1 { font-size: 38px; }
-.hero span { color: #78f078; }
-.cards {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding: 20px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 5%;
+  border-bottom: 1px solid #304030;
+  position: sticky;
+  top: 0;
+  background: #101510f5;
 }
-.card {
-  background: #1a241c;
-  border: 1px solid #65dc69;
-  border-radius: 14px;
-  padding: 25px;
-  width: 230px;
+.logo { color: var(--green); font-weight: 900; font-size: 22px; }
+nav { display: flex; gap: 8px; }
+button, input {
+  font: inherit;
+  border-radius: 9px;
+  padding: 12px;
 }
-.price {
-  color: #78f078;
-  font-size: 28px;
-  font-weight: bold;
+button { cursor: pointer; border: 0; font-weight: bold; }
+.primary { background: var(--green); color: #102010; }
+.secondary { background: #293629; color: white; border: 1px solid #526452; }
+main { max-width: 720px; margin: 35px auto; padding: 16px; }
+.hero, .panel {
+  background: var(--panel);
+  border: 1px solid #344534;
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 18px;
 }
-button {
-  padding: 12px 22px;
-  border: none;
-  border-radius: 8px;
-  background: #65dc69;
-  cursor: pointer;
-  font-weight: bold;
+.hero { text-align: center; }
+h1 { color: var(--green); font-size: clamp(28px, 6vw, 42px); }
+h2 { margin-top: 0; }
+.muted { color: var(--muted); line-height: 1.6; }
+.amounts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 16px 0;
 }
-footer {
-  padding: 25px;
-  color: #aabaaa;
+.amount { background: #293629; color: white; border: 1px solid #526452; }
+.amount.selected { background: var(--green); color: #102010; }
+input {
+  width: 100%;
+  background: #101510;
+  color: white;
+  border: 1px solid #526452;
+  margin: 7px 0;
+}
+.full { width: 100%; margin-top: 10px; }
+#authPanel { display: none; }
+#status { overflow-wrap: anywhere; font-size: 14px; }
+footer { text-align: center; padding: 25px; color: var(--muted); }
+[hidden] { display: none !important; }
+@media(max-width:430px) {
+  header { padding: 12px; }
+  .logo { font-size: 18px; }
+  nav { gap: 5px; }
+  nav button { padding: 10px 8px; font-size: 13px; }
+  .hero, .panel { padding: 18px; }
 }
 </style>
 </head>
 <body>
+<header>
+  <div class="logo">⛏ AIBZZQ</div>
+  <nav>
+    <button class="secondary" id="openLogin">Кіру</button>
+    <button class="primary" id="openRegister">Тіркелу</button>
+    <button class="secondary" id="logout" hidden>Шығу</button>
+  </nav>
+</header>
 
-<header>⛏ AIBZZQ DONATE</header>
+<main>
+  <section class="hero">
+    <h1>🎮 MINECRAFT DONATE</h1>
+    <p class="muted">Стримді қолда! Донат жіберіп, өз хабарламаңды қалдыр.</p>
+    <p id="accountInfo" class="muted">Аккаунтқа кірмегенсің.</p>
+  </section>
 
-<div class="hero">
-  <h1>Донат <span>дүкені</span> 💎</h1>
-  <p>Өзіңе ұнаған деңгейді таңда!</p>
-</div>
+  <section class="panel" id="authPanel">
+    <h2 id="authTitle">Тіркелу</h2>
+    <p class="muted">Email мен құпиясөзді енгіз.</p>
+    <input id="nickname" placeholder="Ойыншы аты" autocomplete="nickname">
+    <input id="email" type="email" placeholder="Email" autocomplete="email">
+    <input id="password" type="password" placeholder="Құпиясөз (кемінде 6 таңба)" autocomplete="current-password">
+    <button class="primary full" id="submitAuth">Тіркелу</button>
+    <button class="secondary full" id="switchAuth">Аккаунтың бар ма? Кіру</button>
+    <p id="status" class="muted" role="status"></p>
+  </section>
 
-<div class="cards">
-  <div class="card">
-    <h2>🥉 VIP</h2>
-    <p class="price">500 ₸</p>
-    <p>VIP мәртебесі</p>
-    <p>Арнайы белгі</p>
-    <button onclick="buy('VIP',500)">Таңдау</button>
-  </div>
+  <section class="panel">
+    <h2>💚 Донат жіберу</h2>
+    <p class="muted">Донат сомасын таңда.</p>
+    <div class="amounts">
+      <button class="amount" data-amount="100">100 ₸</button>
+      <button class="amount selected" data-amount="150">150 ₸</button>
+      <button class="amount" data-amount="500">500 ₸</button>
+    </div>
+    <input id="donorName" placeholder="Сенің атың">
+    <input id="message" placeholder="Донат хабарламасы">
+    <button class="primary full" id="donate">Донатты жалғастыру</button>
+    <p class="muted" id="donateStatus">Таңдалған сома: 150 ₸</p>
+  </section>
 
-  <div class="card">
-    <h2>🥈 PREMIUM</h2>
-    <p class="price">1000 ₸</p>
-    <p>Premium мәртебесі</p>
-    <p>Қосымша мүмкіндіктер</p>
-    <button onclick="buy('PREMIUM',1000)">Таңдау</button>
-  </div>
+  <section class="panel">
+    <h2>⛏ Донат туралы</h2>
+    <p class="muted">
+      Kaspi арқылы төлем қабылдау және төлем расталғаннан кейін
+      TikTok стриміне хабарлама шығару мен Minecraft-та сыйлық
+      беру кейін серверлік интеграция арқылы қосылады.
+    </p>
+  </section>
+</main>
 
-  <div class="card">
-    <h2>🥇 LEGEND</h2>
-    <p class="price">2500 ₸</p>
-    <p>Legend мәртебесі</p>
-    <p>Ерекше артықшылықтар</p>
-    <button onclick="buy('LEGEND',2500)">Таңдау</button>
-  </div>
-</div>
+<footer>© AIBZZQ DONATE · Қолдауларыңызға рахмет!</footer>
 
-<footer>
-  <h3>Қолдауларыңызға рахмет! 💚</h3>
-  <p>© 2026 AIBZZQ Donate</p>
-</footer>
+<script type="module">
+import { createClient } from
+  'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-<script>
-function buy(name, price) {
-  alert(name + " — " + price + " ₸\n" +
-  "Нақты төлем жүйесі әзірге қосылмаған.");
+const SUPABASE_URL = 'https://wbqusodxzjqywfxhtrmg.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_K_mfCIU3deMxDBPePO24kA_yF10NWVB';
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const $ = id => document.getElementById(id);
+let mode = 'register';
+let amount = 150;
+
+function setStatus(text) { $('status').textContent = text; }
+function openAuth(nextMode) {
+  mode = nextMode;
+  $('authPanel').style.display = 'block';
+  $('authTitle').textContent = mode === 'register' ? 'Тіркелу' : 'Кіру';
+  $('submitAuth').textContent = mode === 'register' ? 'Тіркелу' : 'Кіру';
+  $('nickname').hidden = mode !== 'register';
+  $('switchAuth').textContent = mode === 'register'
+    ? 'Аккаунтың бар ма? Кіру'
+    : 'Аккаунтың жоқ па? Тіркелу';
+  setStatus('');
+  $('authPanel').scrollIntoView({ behavior: 'smooth' });
 }
-</script>
 
+$('openLogin').addEventListener('click', () => openAuth('login'));
+$('openRegister').addEventListener('click', () => openAuth('register'));
+$('switchAuth').addEventListener('click', () =>
+  openAuth(mode === 'register' ? 'login' : 'register'));
+
+$('submitAuth').addEventListener('click', async () => {
+  const email = $('email').value.trim();
+  const password = $('password').value;
+  const nickname = $('nickname').value.trim();
+
+  if (!email || password.length < 6) {
+    setStatus('Email енгіз және құпиясөз кемінде 6 таңба болсын.');
+    return;
+  }
+  if (mode === 'register' && !nickname) {
+    setStatus('Ойыншы атыңды енгіз.');
+    return;
+  }
+
+  $('submitAuth').disabled = true;
+  setStatus('Күте тұр...');
+
+  try {
+    if (mode === 'register') {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { nickname },
+          emailRedirectTo: location.origin + location.pathname
+        }
+      });
+      if (error) throw error;
+      if (data.session) {
+        setStatus('Тіркелу сәтті өтті!');
+      } else {
+        setStatus('Поштаңа растау хаты жіберілді. Email-ды тексер.');
+      }
+    } else {
+      const { error } = await supabase.auth.signInWithPassword({
+        email, password
+      });
+      if (error) throw error;
+      setStatus('Сәтті кірдің!');
+    }
+    await updateAccount();
+  } catch (error) {
+    setStatus('Қате: ' + error.message);
+  } finally {
+    $('submitAuth').disabled = false;
+  }
+});
+
+async function updateAccount() {
+  const { data } = await supabase.auth.getUser();
+  const user = data.user;
+  $('accountInfo').textContent = user
+    ? 'Аккаунт: ' + (user.user_metadata?.nickname || user.email)
+    : 'Аккаунтқа кірмегенсің.';
+  $('logout').hidden = !user;
+  $('openLogin').hidden = !!user;
+  $('openRegister').hidden = !!user;
+  if (user?.user_metadata?.nickname) {
+    $('donorName').value = user.user_metadata.nickname;
+  }
+}
+
+$('logout').addEventListener('click', async () => {
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    $('accountInfo').textContent = 'Қате: ' + error.message;
+    return;
+  }
+  await updateAccount();
+});
+
+document.querySelectorAll('.amount').forEach(button => {
+  button.addEventListener('click', () => {
+    amount = Number(button.dataset.amount);
+    document.querySelectorAll('.amount').forEach(item =>
+      item.classList.toggle('selected', item === button));
+    $('donateStatus').textContent = 'Таңдалған сома: ' + amount + ' ₸';
+  });
+});
+
+$('donate').addEventListener('click', () => {
+  $('donateStatus').textContent =
+    'Бұл әзірге демо: ' + amount + ' ₸ таңдалды. Нақты төлем әлі қосылған жоқ.';
+});
+
+supabase.auth.onAuthStateChange(() => {
+  updateAccount();
+});
+updateAccount();
+</script>
 </body>
 </html>
